@@ -1,4 +1,4 @@
-module ThankYouStars.Package (
+module Utils.ThankYouStars.Package (
       getThisPackageName
     , allBuildDepends
     , readHackage
@@ -7,7 +7,7 @@ module ThankYouStars.Package (
     , unPackageName
     ) where
 
-import ThankYouStars.GitHub
+import Utils.ThankYouStars.GitHub
 
 import           Data.List                             ( isInfixOf )
 import           Data.List.Split                       ( splitOneOf )

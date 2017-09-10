@@ -1,7 +1,7 @@
 {-# LANGUAGE DataKinds           #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-module ThankYouStars.GitHub (
+module Utils.ThankYouStars.GitHub (
       Token(..)
     , GitHubRepo(..)
     , readToken

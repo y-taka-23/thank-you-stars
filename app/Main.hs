@@ -1,8 +1,8 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module Main (main) where
 
-import ThankYouStars.GitHub
-import ThankYouStars.Package
+import Utils.ThankYouStars.GitHub
+import Utils.ThankYouStars.Package
 
 import           Control.Exception ( SomeException, catch )
 import           Data.Maybe        ( catMaybes )
