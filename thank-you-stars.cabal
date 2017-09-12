@@ -1,5 +1,5 @@
 name:                thank-you-stars
-version:             0.1.0.0
+version:             0.1.0
 synopsis:            Give your dependencies stars on GitHub!
 description:
     A tool for starring GitHub repositories. It detects dependent libraries
@@ -8,9 +8,9 @@ description:
 homepage:            https://github.com/y-taka-23/thank-you-stars#readme
 license:             BSD3
 license-file:        LICENSE
-author:              TAKAHASHI Yuto
-maintainer:          ytaka23dev@gmail.com
-copyright:           2017 TAKAHASHI Yuto
+author:              TAKAHASHI Yuto <ytaka23dev@gmail.com>
+maintainer:          TAKAHASHI Yuto <ytaka23dev@gmail.com>
+copyright:           Copyright (C) 2017 TAKAHASHI Yuto
 category:            Utils
 build-type:          Simple
 extra-source-files:  README.md
