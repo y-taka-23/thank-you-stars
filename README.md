@@ -2,6 +2,7 @@ thank-you-stars
 ===============
 
 [![Build Status](https://travis-ci.org/y-taka-23/thank-you-stars.svg?branch=master)](https://travis-ci.org/y-taka-23/thank-you-stars)
+[![Hackage](https://img.shields.io/hackage/v/thank-you-stars.svg)](https://hackage.haskell.org/package/thank-you-stars)
 
 A tool for starring GitHub repositories. It detects dependent libraries
 which are hosted on GitHub via `package.cabal` file,
