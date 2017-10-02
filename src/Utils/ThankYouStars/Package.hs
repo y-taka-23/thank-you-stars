@@ -1,3 +1,5 @@
+{-# LANGUAGE LambdaCase #-}
+
 module Utils.ThankYouStars.Package (
       getThisPackageName
     , allBuildDepends
@@ -9,6 +11,7 @@ module Utils.ThankYouStars.Package (
 
 import Utils.ThankYouStars.GitHub
 
+import           Control.Monad                         ( (<$!>) )
 import           Data.List                             ( isInfixOf )
 import           Data.List.Split                       ( splitOneOf )
 import qualified Data.Map                              as M
@@ -19,7 +22,9 @@ import           Distribution.Package
 import           Distribution.PackageDescription
 import           Distribution.PackageDescription.Parse ( readPackageDescription )
 import           Distribution.Verbosity                ( normal )
+import           Safe                                  ( headMay )
 import           System.Directory                      ( getCurrentDirectory )
+import           System.Environment                    ( getArgs )
 import           System.FilePath                       ( takeBaseName )
 
 allBuildDepends :: GenericPackageDescription -> S.Set PackageName
@@ -34,7 +39,12 @@ depends :: BuildInfo -> [PackageName]
 depends = map toPackageName . targetBuildDepends
 
 getThisPackageName :: IO PackageName
-getThisPackageName = (PackageName . takeBaseName) <$> getCurrentDirectory
+getThisPackageName = headMay <$!> getArgs >>= \case
+  Nothing            -> fromCurrentDirectory
+  Just specifiedName -> return $ PackageName specifiedName
+  where
+    fromCurrentDirectory :: IO PackageName
+    fromCurrentDirectory = (PackageName . takeBaseName) <$> getCurrentDirectory
 
 readCabalFile :: FilePath -> IO GenericPackageDescription
 readCabalFile = readPackageDescription normal
