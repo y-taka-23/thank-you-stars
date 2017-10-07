@@ -1,9 +1,9 @@
 module Utils.ThankYouStars.Package (
       getThisPackageName
     , allBuildDepends
-    , readHackage
     , lookupRepo
     , readCabalFile
+    , readStackIndex
     , unPackageName
     ) where
 
@@ -14,13 +14,15 @@ import           Data.List.Split                       ( splitOneOf )
 import qualified Data.Map                              as M
 import qualified Data.Set                              as S
 import           Data.Maybe
-import           Distribution.Hackage.DB               ( Hackage, readHackage )
+import           Distribution.Hackage.DB               ( Hackage, readHackage' )
 import           Distribution.Package
 import           Distribution.PackageDescription
 import           Distribution.PackageDescription.Parse ( readPackageDescription )
 import           Distribution.Verbosity                ( normal )
-import           System.Directory                      ( getCurrentDirectory )
-import           System.FilePath                       ( takeBaseName )
+import           System.Directory                      ( getCurrentDirectory
+                                                       , getAppUserDataDirectory
+                                                       )
+import           System.FilePath                       ( takeBaseName, joinPath )
 
 allBuildDepends :: GenericPackageDescription -> S.Set PackageName
 allBuildDepends desc =
@@ -62,3 +64,11 @@ parseLocation loc
     where
         isGitHub = isInfixOf "github.com" loc
         ps       = splitOneOf "/." loc
+
+readStackIndex :: IO Hackage
+readStackIndex = getStackIndexPath >>= readHackage'
+
+getStackIndexPath :: IO FilePath
+getStackIndexPath = do
+    stackDir <- getAppUserDataDirectory "stack"
+    return $ joinPath [ stackDir, "indices", "Hackage", "00-index.tar" ]

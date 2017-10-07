@@ -22,7 +22,7 @@ main = do
             die ("Cannot parse " ++ show tokenFile ++ " into a token")
         Right token  -> do
             desc <- readCabalFile cabalFile
-            db   <- readHackage
+            db   <- readStackIndex
             let pkgs   = S.delete thisPkg $ allBuildDepends desc
                 mRepos = S.map (flip lookupRepo $ db) pkgs
                 repos  = catMaybes $ S.toList mRepos
