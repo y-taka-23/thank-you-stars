@@ -32,6 +32,7 @@ spec = do
                 , "hackage-db"
                 , "hspec"
                 , "req"
+                , "safe"
                 , "split"
                 , "text"
                 , "thank-you-stars"
