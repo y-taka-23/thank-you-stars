@@ -1,15 +1,13 @@
 module Utils.ThankYouStars.Package (
-      getThisPackageName
-    , allBuildDepends
-    , lookupRepo
+      dependentRepos
+    , getCabalFiles
     , readCabalFile
     , readStackIndex
-    , unPackageName
     ) where
 
 import Utils.ThankYouStars.GitHub
 
-import           Data.List                             ( isInfixOf )
+import           Data.List                             ( isInfixOf, isPrefixOf )
 import           Data.List.Split                       ( splitOneOf )
 import qualified Data.Map                              as M
 import qualified Data.Set                              as S
@@ -21,8 +19,14 @@ import           Distribution.PackageDescription.Parse ( readPackageDescription 
 import           Distribution.Verbosity                ( normal )
 import           System.Directory                      ( getCurrentDirectory
                                                        , getAppUserDataDirectory
+                                                       , getPermissions
+                                                       , searchable
+                                                       , listDirectory
                                                        )
-import           System.FilePath                       ( takeBaseName, joinPath )
+import           System.FilePath                       ( joinPath
+                                                       , combine
+                                                       , takeExtension
+                                                       )
 
 allBuildDepends :: GenericPackageDescription -> S.Set PackageName
 allBuildDepends desc =
@@ -35,11 +39,32 @@ allBuildDepends desc =
 depends :: BuildInfo -> [PackageName]
 depends = map toPackageName . targetBuildDepends
 
-getThisPackageName :: IO PackageName
-getThisPackageName = (PackageName . takeBaseName) <$> getCurrentDirectory
+getCabalFiles :: IO (S.Set FilePath)
+getCabalFiles = getCurrentDirectory >>= searchCabalFiles
+
+searchCabalFiles :: FilePath -> IO (S.Set FilePath)
+searchCabalFiles fp = do
+    p <- getPermissions fp
+    if searchable p
+        then do
+            children <- map (combine fp) . filter visible <$> listDirectory fp
+            S.unions <$> mapM searchCabalFiles children
+        else do
+            if takeExtension fp == ".cabal"
+                then return $ S.singleton fp
+                else return $ S.empty
+
+visible :: FilePath -> Bool
+visible fp = not $ "." `isPrefixOf` fp
 
 readCabalFile :: FilePath -> IO GenericPackageDescription
 readCabalFile = readPackageDescription normal
+
+dependentRepos :: Hackage -> GenericPackageDescription -> S.Set GitHubRepo
+dependentRepos db desc = S.map fromJust $ S.filter isJust mRepos
+    where
+        pkgs    = S.delete (packageName desc) (allBuildDepends desc)
+        mRepos  = S.map (flip lookupRepo $ db) pkgs
 
 toPackageName :: Dependency -> PackageName
 toPackageName (Dependency name _) = name

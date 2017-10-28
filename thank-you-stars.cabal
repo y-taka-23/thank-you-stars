@@ -54,7 +54,8 @@ test-suite thank-you-stars-spec
   build-depends:       base
                      , Cabal
                      , containers
-                     , hackage-db
+                     , directory
+                     , filepath
                      , hspec
                      , thank-you-stars
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N

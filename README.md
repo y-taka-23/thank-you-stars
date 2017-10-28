@@ -5,7 +5,7 @@ thank-you-stars
 [![Hackage](https://img.shields.io/hackage/v/thank-you-stars.svg)](https://hackage.haskell.org/package/thank-you-stars)
 
 A tool for starring GitHub repositories. It detects dependent libraries
-which are hosted on GitHub via `package.cabal` file,
+which are hosted on GitHub via `.cabal` file,
 and stars the repositories all at once.
 
 Setup
@@ -35,7 +35,8 @@ Usage
 -----
 
 Run `thank-you-stars` in the root directory of your project.
-Then it scans the `package.cabal` and the local Hackage DB,
+Then it scans all `.cabal` files under the current directory
+and metadata of the packages from the local Stackage DB,
 stars your dependent libraries if they are hosted on GitHub.
 
 ```console
