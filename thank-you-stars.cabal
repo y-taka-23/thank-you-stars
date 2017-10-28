@@ -1,9 +1,9 @@
 name:                thank-you-stars
-version:             0.1.0
+version:             0.2.0
 synopsis:            Give your dependencies stars on GitHub!
 description:
     A tool for starring GitHub repositories. It detects dependent libraries
-    which are hosted on GitHub via package.cabal file,
+    which are hosted on GitHub via .cabal files,
     and stars the repositories all at once.
 homepage:            https://github.com/y-taka-23/thank-you-stars#readme
 license:             BSD3
