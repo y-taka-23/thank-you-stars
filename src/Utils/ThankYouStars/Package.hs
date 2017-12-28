@@ -5,28 +5,25 @@ module Utils.ThankYouStars.Package (
     , readStackIndex
     ) where
 
-import Utils.ThankYouStars.GitHub
+import           Utils.ThankYouStars.GitHub
 
-import           Data.List                             ( isInfixOf, isPrefixOf )
-import           Data.List.Split                       ( splitOneOf )
+import           Data.List                             (isInfixOf, isPrefixOf)
+import           Data.List.Split                       (splitOneOf)
 import qualified Data.Map                              as M
-import qualified Data.Set                              as S
 import           Data.Maybe
-import           Distribution.Hackage.DB               ( Hackage, readHackage' )
+import qualified Data.Set                              as S
+import           Distribution.Hackage.DB               (Hackage, readHackage')
 import           Distribution.Package
 import           Distribution.PackageDescription
-import           Distribution.PackageDescription.Parse ( readPackageDescription )
-import           Distribution.Verbosity                ( normal )
-import           System.Directory                      ( getCurrentDirectory
-                                                       , getAppUserDataDirectory
-                                                       , getPermissions
-                                                       , searchable
-                                                       , listDirectory
-                                                       )
-import           System.FilePath                       ( joinPath
-                                                       , combine
-                                                       , takeExtension
-                                                       )
+import           Distribution.PackageDescription.Parse (readPackageDescription)
+import           Distribution.Verbosity                (normal)
+import           System.Directory                      (getAppUserDataDirectory,
+                                                        getCurrentDirectory,
+                                                        getPermissions,
+                                                        listDirectory,
+                                                        searchable)
+import           System.FilePath                       (combine, joinPath,
+                                                        takeExtension)
 
 allBuildDepends :: GenericPackageDescription -> S.Set PackageName
 allBuildDepends desc =

@@ -1,12 +1,12 @@
 module Main (main) where
 
-import Utils.ThankYouStars.GitHub
-import Utils.ThankYouStars.Package
+import           Utils.ThankYouStars.GitHub
+import           Utils.ThankYouStars.Package
 
-import qualified Data.Set          as S
-import           System.Exit       ( die )
-import           System.Directory  ( getHomeDirectory )
-import           System.FilePath   ( joinPath )
+import qualified Data.Set                    as S
+import           System.Directory            (getHomeDirectory)
+import           System.Exit                 (die)
+import           System.FilePath             (joinPath)
 
 main :: IO ()
 main = do
