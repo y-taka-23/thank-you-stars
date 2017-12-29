@@ -1,9 +1,9 @@
-{-# LANGUAGE OverloadedStrings  #-}
+{-# LANGUAGE OverloadedStrings #-}
 module Utils.ThankYouStars.GitHubSpec (spec) where
 
-import Utils.ThankYouStars.GitHub
+import           Utils.ThankYouStars.GitHub
 
-import Test.Hspec
+import           Test.Hspec
 
 spec :: Spec
 spec = do

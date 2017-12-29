@@ -1,11 +1,11 @@
 module Utils.ThankYouStars.PackageSpec (spec) where
 
-import Utils.ThankYouStars.GitHub
-import Utils.ThankYouStars.Package
+import           Utils.ThankYouStars.GitHub
+import           Utils.ThankYouStars.Package
 
-import qualified Data.Set         as S
-import           System.Directory ( getCurrentDirectory )
-import           System.FilePath  ( joinPath )
+import qualified Data.Set                    as S
+import           System.Directory            (getCurrentDirectory)
+import           System.FilePath             (joinPath)
 import           Test.Hspec
 
 spec :: Spec
