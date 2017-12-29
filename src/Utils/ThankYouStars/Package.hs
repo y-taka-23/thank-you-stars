@@ -60,7 +60,8 @@ readCabalFile = readPackageDescription normal
 dependentRepos :: Hackage -> GenericPackageDescription -> S.Set GitHubRepo
 dependentRepos db desc = S.map fromJust $ S.filter isJust mRepos
     where
-        pkgs    = S.delete (packageName desc) (allBuildDepends desc)
+        excepts = [PackageName "base", packageName desc]
+        pkgs    = foldr S.delete (allBuildDepends desc) excepts
         mRepos  = S.map (flip lookupRepo $ db) pkgs
 
 toPackageName :: Dependency -> PackageName
