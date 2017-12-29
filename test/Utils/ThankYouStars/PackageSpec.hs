@@ -34,5 +34,5 @@ spec = do
                 , GitHubRepo "hspec" "hspec"
                 , GitHubRepo "mrkkrp" "req"
                 , GitHubRepo "byorgey" "split"
-                , GitHubRepo "bos" "text"
+                , GitHubRepo "haskell" "text"
                 ]
