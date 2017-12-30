@@ -5,7 +5,7 @@ thank-you-stars
 [![Hackage](https://img.shields.io/hackage/v/thank-you-stars.svg)](https://hackage.haskell.org/package/thank-you-stars)
 
 A tool for starring GitHub repositories. It detects dependent libraries
-which are hosted on GitHub via `.cabal` file,
+which are hosted on GitHub via `.cabal` files,
 and stars the repositories all at once.
 
 Setup
