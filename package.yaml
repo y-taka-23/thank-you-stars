@@ -1,0 +1,60 @@
+name:           thank-you-stars
+version:        '0.3.0'
+synopsis:       'Give your dependencies stars on GitHub!'
+description:
+  A tool for starring GitHub repositories. It detects dependent libraries
+  which are hosted on GitHub via .cabal files,
+  and stars the repositories all at once.
+category:       Utils
+author:         'TAKAHASHI Yuto <ytaka23dev@gmail.com>'
+maintainer:     'TAKAHASHI Yuto <ytaka23dev@gmail.com>'
+copyright:      'Copyright (C) 2017 TAKAHASHI Yuto'
+license:        BSD3
+github:         y-taka-23/thank-you-stars
+
+extra-source-files:
+- README.md
+
+dependencies:
+- base >=4.7 && <5
+- containers
+- directory
+- filepath
+
+library:
+  source-dirs: src
+  exposed-modules:
+  - Utils.ThankYouStars.GitHub
+  - Utils.ThankYouStars.Package
+  dependencies:
+  - aeson
+  - bytestring
+  - Cabal
+  - hackage-db
+  - req
+  - split
+  - text
+
+executables:
+  thank-you-stars:
+    main:           Main.hs
+    source-dirs:    app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - thank-you-stars
+
+tests:
+  thank-you-stars-spec:
+    main:           Spec.hs
+    source-dirs:    test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - Cabal
+    - hspec
+    - thank-you-stars
