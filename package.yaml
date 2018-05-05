@@ -23,9 +23,6 @@ dependencies:
 
 library:
   source-dirs: src
-  exposed-modules:
-  - Utils.ThankYouStars.GitHub
-  - Utils.ThankYouStars.Package
   dependencies:
   - aeson
   - bytestring
