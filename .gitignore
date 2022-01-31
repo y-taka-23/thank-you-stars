@@ -19,4 +19,3 @@ cabal.sandbox.config
 cabal.project.local
 .HTF/
 *.tags
-thank-you-stars.cabal
