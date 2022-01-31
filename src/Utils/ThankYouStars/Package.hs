@@ -2,39 +2,44 @@ module Utils.ThankYouStars.Package (
       dependentRepos
     , getCabalFiles
     , readCabalFile
-    , readStackIndex
+    , readHackageDB
     ) where
 
-import           Utils.ThankYouStars.GitHub
+import Utils.ThankYouStars.GitHub
 
-import           Data.List                             (isInfixOf, isPrefixOf)
-import           Data.List.Split                       (splitOneOf)
-import qualified Data.Map                              as M
+import           Data.List
+    ( isInfixOf
+    , isPrefixOf
+    )
+import           Data.List.Split                               ( splitOneOf )
+import qualified Data.Map                                      as M
 import           Data.Maybe
-import qualified Data.Set                              as S
-import           Distribution.Hackage.DB               (Hackage, readHackage')
+import qualified Data.Set                                      as S
+import           Distribution.Hackage.DB
+    ( HackageDB
+    , cabalFile
+    , hackageTarball
+    , readTarball
+    )
 import           Distribution.Package
 import           Distribution.PackageDescription
-import           Distribution.PackageDescription.Parse (readPackageDescription)
-import           Distribution.Verbosity                (normal)
-import           System.Directory                      (getAppUserDataDirectory,
-                                                        getCurrentDirectory,
-                                                        getPermissions,
-                                                        listDirectory,
-                                                        searchable)
-import           System.FilePath                       (combine, joinPath,
-                                                        takeExtension)
-
-allBuildDepends :: GenericPackageDescription -> S.Set PackageName
-allBuildDepends desc =
-    let ls = map (libBuildInfo . condTreeData) . maybeToList . condLibrary   $ desc
-        es = map (buildInfo          . condTreeData . snd) . condExecutables $ desc
-        ts = map (testBuildInfo      . condTreeData . snd) . condTestSuites  $ desc
-        bs = map (benchmarkBuildInfo . condTreeData . snd) . condBenchmarks  $ desc
-    in  S.fromList . concatMap depends $ ls ++ es ++ ts ++ bs
-
-depends :: BuildInfo -> [PackageName]
-depends = map toPackageName . targetBuildDepends
+import           Distribution.PackageDescription.Configuration
+    ( flattenPackageDescription
+    )
+import           Distribution.PackageDescription.Parsec
+    ( readGenericPackageDescription
+    )
+import           Distribution.Verbosity                        ( normal )
+import           System.Directory
+    ( getCurrentDirectory
+    , getPermissions
+    , listDirectory
+    , searchable
+    )
+import           System.FilePath
+    ( combine
+    , takeExtension
+    )
 
 getCabalFiles :: IO (S.Set FilePath)
 getCabalFiles = getCurrentDirectory >>= searchCabalFiles
@@ -55,23 +60,25 @@ visible :: FilePath -> Bool
 visible fp = not $ "." `isPrefixOf` fp
 
 readCabalFile :: FilePath -> IO GenericPackageDescription
-readCabalFile = readPackageDescription normal
+readCabalFile = readGenericPackageDescription normal
 
-dependentRepos :: Hackage -> GenericPackageDescription -> S.Set GitHubRepo
+dependentRepos :: HackageDB -> GenericPackageDescription -> S.Set GitHubRepo
 dependentRepos db desc = S.map fromJust $ S.filter isJust mRepos
     where
-        excepts = [PackageName "base", packageName desc]
-        pkgs    = foldr S.delete (allBuildDepends desc) excepts
+        excepts = [mkPackageName "base", packageName desc]
+        pkgs    = foldr S.delete (allDependencies desc) excepts
         mRepos  = S.map (flip lookupRepo $ db) pkgs
 
-toPackageName :: Dependency -> PackageName
-toPackageName (Dependency name _) = name
+allDependencies :: GenericPackageDescription -> S.Set PackageName
+allDependencies = S.fromList . map toPackageName . allBuildDepends . flattenPackageDescription
+    where
+        toPackageName (Dependency name _ _) = name
 
-lookupRepo :: PackageName -> Hackage -> Maybe GitHubRepo
+lookupRepo :: PackageName -> HackageDB -> Maybe GitHubRepo
 lookupRepo pkg db = listToMaybe . catMaybes . map parseRepo $ repos
     where
-        repos   = fromMaybe [] $ toRepos <$> M.lookup (unPackageName pkg) db
-        toRepos = sourceRepos . packageDescription . snd . M.findMax
+        repos   = fromMaybe [] $ toRepos <$> M.lookup pkg db
+        toRepos = sourceRepos . flattenPackageDescription . cabalFile . snd . M.findMax
 
 parseRepo :: SourceRepo -> Maybe GitHubRepo
 parseRepo src = case (repoType src, repoLocation src) of
@@ -88,10 +95,5 @@ parseLocation loc
         isGitHub = isInfixOf "github.com" loc
         ps       = splitOneOf "/." loc
 
-readStackIndex :: IO Hackage
-readStackIndex = getStackIndexPath >>= readHackage'
-
-getStackIndexPath :: IO FilePath
-getStackIndexPath = do
-    stackDir <- getAppUserDataDirectory "stack"
-    return $ joinPath [ stackDir, "indices", "Hackage", "00-index.tar" ]
+readHackageDB :: IO HackageDB
+readHackageDB = hackageTarball >>= readTarball Nothing

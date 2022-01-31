@@ -1,11 +1,11 @@
 module Utils.ThankYouStars.PackageSpec (spec) where
 
-import           Utils.ThankYouStars.GitHub
-import           Utils.ThankYouStars.Package
+import Utils.ThankYouStars.GitHub
+import Utils.ThankYouStars.Package
 
-import qualified Data.Set                    as S
-import           System.Directory            (getCurrentDirectory)
-import           System.FilePath             (joinPath)
+import qualified Data.Set         as S
+import           System.Directory ( getCurrentDirectory )
+import           System.FilePath  ( joinPath )
 import           Test.Hspec
 
 spec :: Spec
@@ -18,19 +18,19 @@ spec = do
                 , joinPath [curr, "test", "Fixture", "dummy.cabal"]
                 ]
 
-    -- TODO: too fragile. mock the stack DB
+    -- TODO: too fragile. mock the Hackage DB
     describe "dependentRepos" $ do
         it "returns the set of all GitHub repos listed in build-depends" $ do
-            db   <- readStackIndex
+            db   <- readHackageDB
             desc <- readCabalFile "thank-you-stars.cabal"
             dependentRepos db desc `shouldBe` S.fromList [
-                  GitHubRepo "bos" "aeson"
+                  GitHubRepo "haskell" "aeson"
                 , GitHubRepo "haskell" "bytestring"
                 , GitHubRepo "haskell" "cabal"
                 , GitHubRepo "haskell" "containers"
                 , GitHubRepo "haskell" "directory"
                 , GitHubRepo "haskell" "filepath"
-                , GitHubRepo "peti" "hackage-db"
+                , GitHubRepo "NixOS" "hackage-db"
                 , GitHubRepo "hspec" "hspec"
                 , GitHubRepo "mrkkrp" "req"
                 , GitHubRepo "byorgey" "split"

@@ -11,12 +11,12 @@ and stars the repositories all at once.
 Setup
 -----
 
-The project is managed by Stack, so you can install it simply:
+The project is managed by Cabal, so you can install it simply:
 
 ```console
 $ git clone https://github.com/y-taka-23/thank-you-stars.git
 $ cd thank-you-stars
-$ stack install
+$ cabal install
 ```
 
 To star GitHub repositories, you have to get your personal access token.
@@ -36,20 +36,22 @@ Usage
 
 Run `thank-you-stars` in the root directory of your project.
 Then it scans all `.cabal` files under the current directory
-and metadata of the packages from the local Stackage DB,
+and metadata of the packages from the local Hackage DB,
 stars your dependent libraries if they are hosted on GitHub.
 
 ```console
 $ thank-you-stars
-Starred! https://github.com/bos/aeson
-Starred! https://github.com/bos/text
+Starred! https://github.com/NixOS/hackage-db
+Starred! https://github.com/byorgey/split
+Starred! https://github.com/haskell/aeson
 Starred! https://github.com/haskell/bytestring
 Starred! https://github.com/haskell/cabal
 Starred! https://github.com/haskell/containers
 Starred! https://github.com/haskell/directory
 Starred! https://github.com/haskell/filepath
+Starred! https://github.com/haskell/text
+Starred! https://github.com/hspec/hspec
 Starred! https://github.com/mrkkrp/req
-Starred! https://github.com/peti/hackage-db
 ```
 
 License

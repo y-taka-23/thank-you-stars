@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds           #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module Utils.ThankYouStars.GitHub (
       Token(..)
     , GitHubRepo(..)
@@ -8,16 +9,15 @@ module Utils.ThankYouStars.GitHub (
     , starRepo
     ) where
 
-import           Control.Exception     (catch, throwIO)
+import           Control.Exception     ( catch, throwIO )
 import           Data.Aeson
-import           Data.ByteString       (ByteString)
+import           Data.ByteString       ( ByteString )
 import qualified Data.ByteString.Lazy  as BSL
-import           Data.Monoid           ((<>))
-import           Data.String           (fromString)
-import           Data.Text.Encoding    (encodeUtf8)
-import           Data.Version          (showVersion)
+import           Data.String           ( fromString )
+import           Data.Text.Encoding    ( encodeUtf8 )
+import           Data.Version          ( showVersion )
 import           Network.HTTP.Req
-import           Paths_thank_you_stars (version)
+import           Paths_thank_you_stars ( version )
 
 data Token = Token {
       unToken :: ByteString
@@ -25,6 +25,7 @@ data Token = Token {
 
 instance FromJSON Token where
     parseJSON (Object v) = Token . encodeUtf8 <$> v .: "token"
+    parseJSON _          = error "invalid format"
 
 readToken :: FilePath -> IO (Either String Token)
 readToken fp = eitherDecode <$> BSL.readFile fp
@@ -46,6 +47,7 @@ userAgent = header "User-Agent" agent
     where
         agent = "thank-you-stars/" <> fromString (showVersion version)
 
+-- Warning suppressed by a GHC option
 instance MonadHttp IO where
     handleHttpException = throwIO
 

@@ -1,9 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Utils.ThankYouStars.GitHubSpec (spec) where
 
-import           Utils.ThankYouStars.GitHub
+import Utils.ThankYouStars.GitHub
 
-import           Test.Hspec
+import Test.Hspec
 
 spec :: Spec
 spec = do
@@ -13,4 +13,4 @@ spec = do
                 `shouldReturn` Right (Token { unToken = "test" })
         it "returns an error message in the case of parse failure" $ do
             readToken "test/Fixture/invalid-token.json"
-                `shouldReturn` Left "Error in $: key \"token\" not present"
+                `shouldReturn` Left "Error in $: key \"token\" not found"

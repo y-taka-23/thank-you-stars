@@ -1,12 +1,12 @@
 module Main (main) where
 
-import           Utils.ThankYouStars.GitHub
-import           Utils.ThankYouStars.Package
+import Utils.ThankYouStars.GitHub
+import Utils.ThankYouStars.Package
 
-import qualified Data.Set                    as S
-import           System.Directory            (getHomeDirectory)
-import           System.Exit                 (die)
-import           System.FilePath             (joinPath)
+import qualified Data.Set         as S
+import           System.Directory ( getHomeDirectory )
+import           System.Exit      ( die )
+import           System.FilePath  ( joinPath )
 
 main :: IO ()
 main = do
@@ -17,7 +17,7 @@ main = do
         Left  _ -> do
             die ("Cannot parse " ++ show tokenFile ++ " into a token")
         Right token -> do
-            db     <- readStackIndex
+            db     <- readHackageDB
             cabals <- getCabalFiles
             descs  <- mapM readCabalFile $ S.toList cabals
             let repos = S.unions $ map (dependentRepos db) descs
