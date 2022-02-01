@@ -1,6 +1,6 @@
 cabal-version:      2.4
 name:               thank-you-stars
-version:            0.3.0
+version:            1.0.0
 synopsis:           Give your dependencies stars on GitHub!
 description:
     A tool for starring GitHub repositories. It detects dependent libraries
@@ -9,10 +9,12 @@ description:
 category:           Utils
 homepage:           https://github.com/y-taka-23/thank-you-stars
 license:            BSD-3-Clause
+license-file:       LICENSE
 author:             Yuto Takahashi <ytaka23dev@gmail.com>
 maintainer:         Yuto Takahashi <ytaka23dev@gmail.com>
 copyright:          Copyright (C) 2022 Yuto Takahashi
 extra-source-files: README.md
+                  , cabal.project.freeze
 
 common common
     ghc-options:      -Wall
@@ -34,6 +36,7 @@ library
     exposed-modules:  Utils.ThankYouStars.GitHub
                     , Utils.ThankYouStars.Package
     other-modules:    Paths_thank_you_stars
+    autogen-modules:  Paths_thank_you_stars
     build-depends:    aeson
                     , bytestring
                     , Cabal
