@@ -1,6 +1,6 @@
-on: [push, pull_request]
-
 name: Continuous integration
+
+on: [push, pull_request]
 
 jobs:
   test:
@@ -8,6 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cabal/store
+          key: cabal-${{ hashFiles('cabal.project.freeze') }}
+          restore-keys: cabal-
       - uses: haskell/actions/setup@v1
         with:
           ghc-version: '8.10.7'
