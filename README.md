@@ -1,7 +1,7 @@
 thank-you-stars
 ===============
 
-[![Build Status](https://travis-ci.org/y-taka-23/thank-you-stars.svg?branch=master)](https://travis-ci.org/y-taka-23/thank-you-stars)
+[![GitHub Actions](https://github.com/y-taka-23/thank-you-stars/actions/workflows/ci.yml/badge.svg)](https://github.com/y-taka-23/thank-you-stars/actions/workflows/ci.yml)
 [![Hackage](https://img.shields.io/hackage/v/thank-you-stars.svg)](https://hackage.haskell.org/package/thank-you-stars)
 
 A tool for starring GitHub repositories. It detects dependent libraries
@@ -16,7 +16,7 @@ The project is managed by Cabal, so you can install it simply:
 ```console
 $ git clone https://github.com/y-taka-23/thank-you-stars.git
 $ cd thank-you-stars
-$ cabal install
+$ cabal install --with-compiler ghc-8.10.7
 ```
 
 To star GitHub repositories, you have to get your personal access token.

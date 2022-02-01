@@ -1,4 +1,4 @@
-name: Continuous integration
+name: test
 
 on: [push, pull_request]
 
