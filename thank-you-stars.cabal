@@ -14,7 +14,6 @@ author:             Yuto Takahashi <ytaka23dev@gmail.com>
 maintainer:         Yuto Takahashi <ytaka23dev@gmail.com>
 copyright:          Copyright (C) 2022 Yuto Takahashi
 extra-source-files: README.md
-                  , cabal.project.freeze
 
 common common
     ghc-options:      -Wall
@@ -37,15 +36,15 @@ library
                     , Utils.ThankYouStars.Package
     other-modules:    Paths_thank_you_stars
     autogen-modules:  Paths_thank_you_stars
-    build-depends:    aeson
+    build-depends:    aeson >=1.5.6.0
                     , bytestring
                     , Cabal
                     , containers
                     , directory
                     , filepath
-                    , hackage-db
-                    , req
-                    , split
+                    , hackage-db >=2.1.2
+                    , req >=3.9.0
+                    , split >=0.2.3.4
                     , text
 
 test-suite thank-you-stars-spec
@@ -59,6 +58,6 @@ test-suite thank-you-stars-spec
                       , containers
                       , directory
                       , filepath
-                      , hspec
+                      , hspec >=2.7.10
                       , thank-you-stars
     build-tool-depends: hspec-discover:hspec-discover

@@ -16,7 +16,7 @@ The project is managed by Cabal, so you can install it simply:
 ```console
 $ git clone https://github.com/y-taka-23/thank-you-stars.git
 $ cd thank-you-stars
-$ cabal install --with-compiler ghc-8.10.7
+$ cabal install
 ```
 
 To star GitHub repositories, you have to get your personal access token.
