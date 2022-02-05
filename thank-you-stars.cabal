@@ -1,6 +1,6 @@
 cabal-version:      2.4
 name:               thank-you-stars
-version:            1.0.0
+version:            1.0.1
 synopsis:           Give your dependencies stars on GitHub!
 description:
     A tool for starring GitHub repositories. It detects dependent libraries
