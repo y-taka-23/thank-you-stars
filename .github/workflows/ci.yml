@@ -25,8 +25,9 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v4
         with:
+          push: true
           tags: ghcr.io/${{ github.repository }}:latest
-          #labels:
-          #  - org.opencontainers.image.source=${{ github.repositoryUrl }
-          #  - org.opencontainers.image.description="Give your dependencies stars on GitHub!"
-          #  - org.opencontainers.image.licenses=BSD-3-Clause
+          labels: |
+            org.opencontainers.image.source=${{ github.repositoryUrl }}
+            org.opencontainers.image.description="Give your dependencies stars on GitHub!"
+            org.opencontainers.image.licenses=BSD-3-Clause
