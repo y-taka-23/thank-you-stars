@@ -1,20 +1,32 @@
-name: test
+name: ci
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  test:
-    name: Test
+  docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
         with:
-          path: ~/.cabal/store
-          key: cabal-${{ hashFiles('cabal.project.freeze') }}
-          restore-keys: cabal-
-      - uses: haskell/actions/setup@v1
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        uses: docker/build-push-action@v4
         with:
-          ghc-version: '8.10.7'
-          cabal-version: '3.6.2.0'
-      - run: cabal test
+          tags: ghcr.io/${{ github.repository }}:latest
+          #labels:
+          #  - org.opencontainers.image.source=${{ github.repositoryUrl }
+          #  - org.opencontainers.image.description="Give your dependencies stars on GitHub!"
+          #  - org.opencontainers.image.licenses=BSD-3-Clause
